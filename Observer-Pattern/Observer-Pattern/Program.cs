@@ -13,6 +13,7 @@ namespace Observer_Pattern
             WeatherData weatherData = new WeatherData();
 
             CurrentConditionsDisplay currentDisplay = new CurrentConditionsDisplay(weatherData);
+            SecondDisplay secondDisplay = new SecondDisplay(weatherData);
             weatherData.setMeasurements(80, 65, 30.4);
             weatherData.setMeasurements(82, 70, 29.3);
             weatherData.setMeasurements(78, 90, 29.2);
@@ -89,12 +90,39 @@ namespace Observer_Pattern
         public CurrentConditionsDisplay(WeatherData weatherData)
         {
             this.weatherData = weatherData;
-            weatherData.registerObserver(this);
+            this.weatherData.registerObserver(this);
         }
 
         public void display()
         {
             Console.WriteLine("Current conditions: " + temperature.ToString()
+            + "F degree and " + humidity.ToString() + "humiduty");
+            Console.ReadKey();
+        }
+
+        public void update(double temperature, double humidity, double pressure)
+        {
+            this.temperature = temperature;
+            this.humidity = humidity;
+            display();
+        }
+    }
+
+    public class SecondDisplay : Observer, DisplayElement
+    {
+        private double temperature;
+        private double humidity;
+        private WeatherData weatherData;
+
+        public SecondDisplay(WeatherData weatherData)
+        {
+            this.weatherData = weatherData;
+            this.weatherData.registerObserver(this);
+        }
+
+        public void display()
+        {
+            Console.WriteLine("SecondDisplay: " + temperature.ToString()
             + "F degree and " + humidity.ToString() + "humiduty");
             Console.ReadKey();
         }
